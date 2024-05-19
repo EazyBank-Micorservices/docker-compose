@@ -23,8 +23,6 @@ services:
       resources:
         limits:
           memory: 700m
-    environment:
-      SPRING_RABBIT_MQ: "rabbit"
 
   microservice-configserver-config:
     extends:
@@ -37,5 +35,14 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+
+  microservice-eurekaserver-config:
+    extends:
+      service: microservice-configserver-config
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eurekaserver:8070/eureka/"
 
 
